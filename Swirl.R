@@ -1,0 +1,6 @@
+install.packages("swirl")
+library(swirl)
+install_course("R Programming")
+install_course("The R Programming Environment")
+install_course("Exploratory Data Analysis")
+swirl()
