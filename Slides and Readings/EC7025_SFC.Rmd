@@ -292,7 +292,7 @@ kable(HHdata_1)
 
 #Example of Transaction Flow Matrix
 				
-![Transaction Flow Matrix, source: G&L 2007](TFM.png)
+![Transaction Flow Matrix, source: G&L 2007](../Pics/TFM.png)
 
 # Transaction flow matrix, part 2
 
@@ -314,5 +314,5 @@ kable(HHdata_1)
 
 # Example of Full Integration Matrix
 				
-![Full Integration Matrix, source: G&L 2007](FIM.png)
+![Full Integration Matrix, source: G&L 2007](../Pics/FIM.png)
 

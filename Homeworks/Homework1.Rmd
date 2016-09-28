@@ -1,0 +1,44 @@
+---
+title: "Homework week 1"
+author: "Antoine Godin"
+date: "September 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Swirl
+
+In order to do this homework, you need to have `Swirl` installed. To do so execute the following command. Note that you only need to do this once on a computer but you will have to do it every time you work on a different computer.
+
+```{r, eval=FALSE}
+install.packages("swirl")
+```
+
+`Swirl` is a package that allows you to learn R by offering interactive lectures. For more information see [http://swirlstats.com/](http://swirlstats.com/)
+
+If you already have installed the package, you are ready to start using it. In order to do so, you first need to load it using the command here under. Note that if the command generates an error, it is probable that you haven't installed `Swirl`.
+
+```{r, eval=FALSE}
+library(swirl)
+```
+
+Once swirl is loaded, we first need to install all the lectures we find interesting. The following code installs these 3 lectures. If the code generates an error, there is a chance that you did not load correctly the `Swirl` package.Note that you only need to do this once on a computer but you will have to do it every time you work on a different computer.
+
+```{r, eval=FALSE}
+install_course("R Programming")
+install_course("The R Programming Environment")
+install_course("Exploratory Data Analysis")
+```
+
+You are now ready to start using `Swirl` to do so, execute the following line of code and follow the instructions.
+
+```{r, eval=FALSE}
+swirl()
+```
+
+# Your homework
+
+I want you to do all the lectures from "The R Programming Environment" set and lecture 9-11 and 13-15 from the"R Programming" set. This should give you a good overview of R programming.

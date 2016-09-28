@@ -1,0 +1,23 @@
+---
+title: "Readings"
+author: "Antoine Godin"
+date: "Autumn 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week 1
+
+- Godley and Lavoie (2007), chapter 1&2
+- Caverzasi and Godin (2015)
+
+## Week 2
+
+- 
+
+## Week 3
+
+- Godley and Lavoie (2007), chapter 3&4
