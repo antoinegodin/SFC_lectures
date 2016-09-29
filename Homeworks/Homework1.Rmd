@@ -39,6 +39,6 @@ You are now ready to start using `Swirl` to do so, execute the following line of
 swirl()
 ```
 
-# Your homework
+## Your homework
 
-I want you to do all the lectures from "The R Programming Environment" set and lecture 9-11 and 13-15 from the"R Programming" set. This should give you a good overview of R programming.
+I want you to do all the lectures from "The R Programming Environment" set and lecture 9-11 and 13-15 from the "R Programming" set. This should give you a good overview of R programming.

@@ -9,15 +9,42 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Week 1
+## Week 1 - Intro to SFC and National Accounts
 
 - Godley and Lavoie (2007), chapter 1&2
 - Caverzasi and Godin (2015)
 
-## Week 2
+## Week 2 - Sectoral Accounts and SFC as mathematical objects
 
-- 
+- Fennell et al. (2016)
+- Eurostat (2013), chapter 2-5 (skim through it)
 
-## Week 3
+## Week 3 - Simple SFC models with public money
 
-- Godley and Lavoie (2007), chapter 3&4
+- Godley and Lavoie (2007), chapter 4&5
+- Dos Santos and Zezza (2008)
+
+## Week 4 - Private money and Pricing
+
+- Godley and Lavoie (2007), chapter 7,8&9
+
+## Week 5 - Medium size models and calibration
+
+- Godley and Lavoie (2007), chapter 10
+- Burgess et al. (2016)
+
+## References
+
+Burgess, S., Burrows, O., Godin, A., Kinsella, S. and S. Millard (2016) "A Dynamic Model of Financial Balances for the United Kingdom", *Bank of England Working Paper* No. 614.
+
+Caverzasi, E. and A Godin (2015) “Post-Keynesian stock-flow-consistent modelling: a survey”, *Cambridge Journal of Economics*, 39 (1), 157-187.
+
+Dos Santos, C.H and G. Zezza (2008) A Simplified, “Benchmark”, Stock-Flow Consistent Post-Keynesian Growth Model”, *Metroeconomica*, 59 (3), 441-478.
+
+Eurostat (2013) *European system of accounts ESA 2010*, European Union
+
+Fennell, P., O'Sullivan, D., Godin, A. and S. Kinsella (2016) "Is It Possible to Visualise Any Stock Flow Consistent Model as a Directed Acyclic Graph?", *Computational Economics*, 48 (2), 07-316.
+
+Godley, W. and M. Lavoie (2007) “*Monetary Economics: An Integrated Approach to Credit, Money, Income, Production and Wealth*”, Basingstoke, Palgrave Macmillan 
+
+Lavoie, M. and J. Zhao (2010) “A study of the diversification of China’s foreign reserves in a three-country stock-flow consistent model”, *Metroeconomica*, 61 (3), 558-592.
