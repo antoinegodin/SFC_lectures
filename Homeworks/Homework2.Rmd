@@ -1,0 +1,14 @@
+---
+title: "Homework week 2"
+author: "Antoine Godin"
+date: "29 September 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Godley Stock-Flow norms
+
+Compare Godley's stock flow norms per country. Generate jpg and comment them

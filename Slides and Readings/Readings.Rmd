@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Week 2 - Sectoral Accounts and SFC as mathematical objects
 
 - Fennell et al. (2016)
+- Godley (1999)
 - Eurostat (2013), chapter 2-5 (skim through it)
 
 ## Week 3 - Simple SFC models with public money
@@ -39,11 +40,13 @@ Burgess, S., Burrows, O., Godin, A., Kinsella, S. and S. Millard (2016) "A Dynam
 
 Caverzasi, E. and A Godin (2015) “Post-Keynesian stock-flow-consistent modelling: a survey”, *Cambridge Journal of Economics*, 39 (1), 157-187.
 
-Dos Santos, C.H and G. Zezza (2008) A Simplified, “Benchmark”, Stock-Flow Consistent Post-Keynesian Growth Model”, *Metroeconomica*, 59 (3), 441-478.
+Dos Santos, C.H and G. Zezza (2008) "A Simplified, “Benchmark”, Stock-Flow Consistent Post-Keynesian Growth Model”, *Metroeconomica*, 59 (3), 441-478.
 
 Eurostat (2013) *European system of accounts ESA 2010*, European Union
 
 Fennell, P., O'Sullivan, D., Godin, A. and S. Kinsella (2016) "Is It Possible to Visualise Any Stock Flow Consistent Model as a Directed Acyclic Graph?", *Computational Economics*, 48 (2), 07-316.
+
+Godley, W. (1999) "Seven Unsustainable Processes: Medium-Term Prospects and Policies for the United States and the World", *Strategic analysis*, The Levy Economic Institute of Bard College, 1999.
 
 Godley, W. and M. Lavoie (2007) “*Monetary Economics: An Integrated Approach to Credit, Money, Income, Production and Wealth*”, Basingstoke, Palgrave Macmillan 
 
