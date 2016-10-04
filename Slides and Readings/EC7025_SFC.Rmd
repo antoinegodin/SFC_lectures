@@ -2,7 +2,7 @@
 title: "EC7025 - SFC"
 author: "Antoine Godin"
 date: "Autumn 2016"
-output: slidy_presentation
+output: pdf_document
 bibliography: Bibliography.bib
 ---
 
@@ -317,8 +317,26 @@ kable(HHdata_1)
 				
 ![Full Integration Matrix, source: G&L 2007](../Pics/FIM.png)
 
+# Data
 
-# pdfetch: getting data automatically
+## Eurostat 
+
+![Data Search in Eurostat](Eurostat_DataSearch.png)
+
+![Data Table in Eurostat](Eurostat_DataTable.png)
+
+![Data Details](Eurostat_FieldDetails.png)
+
+## Looking at sectoral Accounts
+
+url: [http://ec.europa.eu/eurostat/web/sector-accounts](http://ec.europa.eu/eurostat/web/sector-accounts)
+
+![Sectoral Accounts webpage](Eurostat_SectoralAccounts.png)
+
+![Sectoral Accounts Countries Data](Eurostat_SectoralAccountsCountries.png)
+
+
+## pdfetch: getting data automatically
 
 - Fetch Economic and Financial Time Series Data from Public Sources
 - Package developped by Abiel Reinhart
@@ -580,7 +598,7 @@ plot.dag(simex,main="SIMEX" )
 - Nodes that do not form a cycle are green while nodes that form a cycle in the system are pink.
 - The Gauss-Seidel needs to be applied only for the cycles
 
-````{r}
+````{r, echo=T}
 ch6 <- sfc.model("ch6.txt",modelName="Chapter6_openmodel")
 graphs = generate.DAG.collapse( adjacency = ch6$matrix )
 par(mfrow = c(1,3))
