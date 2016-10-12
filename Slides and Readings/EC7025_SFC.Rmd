@@ -2,7 +2,7 @@
 title: "EC7025 - SFC"
 author: "Antoine Godin"
 date: "Autumn 2016"
-output: slidy_presentation
+output: pdf_document
 bibliography: Bibliography.bib
 ---
 
@@ -1025,11 +1025,23 @@ The Maastricht treaty: The reference values referred to [...] are:
 
 # Liquidity Preferences and model LP
 
-## Return rates and capital gains
+## Value of perpetuity, interest rates, exepcted returns and capital gains
+
+The value of a financial asset is supposed to reflect the net present value of future cash flows. Thus for a long-term bond who is never redeemed, the price $p_{bL}$ of the bond is given by 
+
+$p_{bL} = \sum \frac{1}{(1+r_{bL})^t} = \frac{1}{r_{bL}}$
 
 Return rate of an asset is equal to both the yield (interests, dividends) and the capital gains normalized to the nominal value of the asset. In the case of a long-term bond:
 
-$Rr_{bL} = r_{bL}(-1)+\frac{\Delta p_{bL}}{p_{bL}(-1)}$
+$Rr_{bL} = r_{bL}(-1)+\frac{\Delta p_{bL}}{p_{bL}(-1)} = \frac{1+p_{bL}-p_{bL}(-1)}{p_{bL}(-1)}$
+
+However, what matter for the households when making their decision is the expected price of bonds $p_{bL}^e$, given the current price of bonds. This leads to the *pure expected rate of return*.
+
+$PERr_{bL} = r_{bL} + \frac{p^e_{bL}-p_{bL}}{p_{bL}}$
+
+Because expectation are not followed by everyone, households migh incorporate a weight $\xi$ into their expectation formation. This leads to the *expected return rate*
+
+$ERr_{bL} = r_{bL} + \xi \frac{p^e_{bL}-p_{bL}}{p_{bL}}$
 
 The change in prices of bonds leads to capital gains which is one of two parts of the change in nominal value of financial assets. More precisely:
 
@@ -1127,34 +1139,199 @@ r_b = r_bar
 p_bl = p_bl_bar
 ```
 
+Let's have a look at the graph of model LP
+
+```{r,echo=T}
+lp<-sfc.model(fileName="LP.txt",modelName="Model Liquidity Preference")
+plot.dag(lp)
+```
+
 ## The adding up of the portfolio behavior
 
 The vertical conditions state that the sum of the exogenous components sums to 1, i.e. you cannot allocate more than the wealth and that the effect of the various return rates and disposable income are substracting the holding of one asset to allow the increase of the holding of another.
 
 \begin{align}
-\lambda_{10} + \lambda_{20} + \lambda_{30} &= 1 \tag{(ADUP.1)}\\
-\lambda_{11} + \lambda_{21} + \lambda_{31} &= 0 \tag{(ADUP.2)}\\
-\lambda_{12} + \lambda_{22} + \lambda_{32} &= 0 \tag{(ADUP.3)}\\
-\lambda_{13} + \lambda_{23} + \lambda_{33} &= 0 \tag{(ADUP.4)}\\
-\lambda_{14} + \lambda_{24} + \lambda_{34} &= 0 \tag{(ADUP.5)}
+\lambda_{10} + \lambda_{20} + \lambda_{30} &= 1 \tag{ADUP.1}\\
+\lambda_{11} + \lambda_{21} + \lambda_{31} &= 0 \tag{ADUP.2}\\
+\lambda_{12} + \lambda_{22} + \lambda_{32} &= 0 \tag{ADUP.3}\\
+\lambda_{13} + \lambda_{23} + \lambda_{33} &= 0 \tag{ADUP.4}\\
+\lambda_{14} + \lambda_{24} + \lambda_{34} &= 0 \tag{ADUP.5}
 \end{align}
 
 The horizontal conditions, added by Godley (1996) state that the impact of an increase in the 'own rate' of an asset should be equal to the impact of a fall in all the other rates.
 
 \begin{align}
-\lambda_{11} &= - \left( \lambda_{12} + \lambda_{13}\right) \tag{(ADUP.6)}\\
-\lambda_{22} &= - \left( \lambda_{21} + \lambda_{23}\right) \tag{(ADUP.7)}\\
-\lambda_{33} &= - \left( \lambda_{31} + \lambda_{32}\right) \tag{(ADUP.8)}
+\lambda_{11} &= - \left( \lambda_{12} + \lambda_{13}\right) \tag{ADUP.6}\\
+\lambda_{22} &= - \left( \lambda_{21} + \lambda_{23}\right) \tag{ADUP.7}\\
+\lambda_{33} &= - \left( \lambda_{31} + \lambda_{32}\right) \tag{ADUP.8}
 \end{align}
 
 Other authors propose the symetry conditions that state that an increase in the return rate of one asset A will have the same impact on the holding of asset B as the increase in the return rate of asset B will have on the holding of asset A
 
 \begin{align}
-\lambda_{12} &= \lambda_{21} \tag{(ADUP.9)}\\
-\lambda_{13} &= \lambda_{31} \tag{(ADUP.10)}\\
-\lambda_{23} &= \lambda_{32} \tag{(ADUP.11)}
+\lambda_{12} &= \lambda_{21} \tag{ADUP.9}\\
+\lambda_{13} &= \lambda_{31} \tag{ADUP.10}\\
+\lambda_{23} &= \lambda_{32} \tag{ADUP.11}
 \end{align}
 
 Note that vertical + symetry imply automatically horizontal but that vertical + horizontal does not necessarily imply symetry.
+
+## Higher interest rates
+
+The first scenario run looks at the impact of interest rates (short- and long-term) on real demand. We assume that the government increases short-term rates from 3% to 4% and the long-term rate from 5% to 6.66%. We assume that this increase is cmpletely unexcpected and that the Treasury is believed in that no other change will occur.
+
+```{r,echo=T}
+lp<-sfc.addScenario(model=lp,vars=list(c("r_bar","p_bl_bar")),values=list(c(0.04,15)),
+							inits=1960,ends=2000)
+datalp<-simulate(lp)
+```
+
+This replicates plot figure 5.2. p. 152
+```{r,echo=T}
+time2=c(1950:2000)
+plot(time2, datalp$scenario_1[as.character(time2),"v"]/
+		 	datalp$scenario[as.character(time2),"yd_r"],
+		 type="l",xlab="",ylab="",lty=1,lwd=2)
+legend("bottomright",legend=c("Wealth to income ratio"),lty=c(1),lwd=2,bty="n")
+grid()
+```
+
+We see that the increase in long-term interest rate leads to capital losses on bonds, leading to a decrease in welath to income ratio. However because interest rates have increase, households have now a higher disposable income leading to a replenishing of their wealth. Note that as in model PC, the steady state GDP is given by
+
+$Y^\star=\frac{G+\left(r_B\cdot B^{\star}_h+BL_S^\star\right) \cdot (1-\theta)}{\theta} = \frac{G_{NT}}{\theta}$
+
+This replicates plot figure 5.3. p. 152
+```{r,echo=T}
+time2=c(1950:2000)
+matplot(time2, datalp$scenario_1[as.character(time2),c("yd_r","cons")],
+		 type="l",xlab="",ylab="",lty=c(1,2), col=1,lwd=2)
+legend("topleft",legend=c("Disposable income","Consumption"),lty=c(1,2),lwd=2,bty="n")
+grid()
+```
+
+This replicates plot figure 5.4. p. 153
+```{r,echo=T}
+time2=c(1950:2000)
+matplot(time2, cbind(datalp$scenario_1[as.character(time2),c("b_h")],
+			datalp$scenario_1[as.character(time2),c("p_bl")]*
+			datalp$scenario_1[as.character(time2),c("bl_h")])/
+				datalp$scenario_1[as.character(time2),c("v")],
+		 type="l",xlab="",ylab="",lty=c(1,2), col=1,lwd=2)
+legend("center",legend=c("Bonds to wealth ratio","Bills to wealth ratio"),
+		lty=c(2,1),lwd=2,bty="n")
+grid()
+```
+
+## Introducing household liquidity
+
+In order to introduce liquidity preferences, we need to modify the model. The first modification is to change the expectation on bonds price to include (i) a learning element and (ii) a stochastic term. Because expectation are going to play a role, we also need to modify the price equation for bonds such that it now reflects a corridor approach to bond pricing. The assumption is thus that the Treasury will try to pin down the price of bonds but only to a certain extent. If the demand is too large (or too low) the treasury will let prices (and interest) float. We assume that the government aims at a certain debt strcuture in terms of maturity.
+
+```{r,echo=T}
+#Adding the equations
+lp2<-sfc.addEqus(lp,list(
+	list(var="z1",equ = "TP>top"),
+	list(var="z2",equ = "TP<bot"),
+	list(var="TP",equ = "(bl_h(-1)*p_bl(-1))/(bl_h(-1)*p_bl(-1)+b_h(-1))")))
+#Adding the parameters
+lp2<-sfc.addVars(lp2,list(
+	list(var="betae",init=0.5),
+	list(var="beta",init=0.01),
+	list(var="add",init=0),
+	list(var="top",init=0.495),
+	list(var="bot",init=0.505)
+))
+#Adding initial values to the endogenous variables that have lags
+lp2<-sfc.editEnd(lp2,var="p_bl_e", init=20)
+lp2<-sfc.editEnd(lp2,var="p_bl", init=20)
+#Modifying the existing equations
+lp2<-sfc.editEqus(lp2,list(
+	list(var="p_bl", eq="(1+z1*beta-z2*beta)*p_bl(-1)"),
+	list(var="p_bl_e",equ = "p_bl_e(-1)-betae*(p_bl_e(-1) - p_bl) + add")))
+#Removing all existing scenarios (coming from LP)
+lp2$scenarios<-NULL
+#Checking that the model is complete
+lp2<-sfc.check(lp2,fill=F)
+#Adding the scenario
+lp2<-sfc.addScenario(model=lp2,vars=list(c("r_bar")),values=list(c(0.035)),inits=1960,
+											ends=2000)
+lp2<-sfc.addScenario(model=lp2,vars=list(c("add")),values=list(c(-3)),inits=c(1955),
+											ends=1955)
+```
+
+Let's have a look at the graph of model LP2
+
+```{r,echo=T}
+plot.dag(lp2)
+```
+
+We are now ready to simulate the model
+
+```{r, echo=T}
+datalp2<-simulate(lp2)
+```
+
+This replicates plot figure 5.5. p. 156
+
+```{r,echo=T}
+time2=c(1950:2000)
+plot(time2,datalp2$scenario_1[as.character(time2),"r_b"],
+     lty=2, lwd=2,type="l",ylab="",xlab="",ylim=c(0.029,0.036))
+par(new=T)
+plot(time2, datalp2$scenario_1[as.character(time2),"r_bl"],
+		 type="l",xlab="",axes=F,ylab="",lty=1,lwd=2,ylim=c(0.0495,0.052))
+axis(4,pretty(c(0.0495,0.052)))
+legend("bottomright",legend=c("Long term interest rate",
+		"Short term interest rate"),lty=c(1,2),lwd=2,bty="n")
+grid()
+```
+
+
+This replicates plot figure 5.6. p. 156
+```{r,echo=T}
+time2=c(1950:2000)
+matplot(time2, datalp2$scenario_1[as.character(time2),c("TP","bot","top")],
+		 type="l",xlab="",ylab="",lty=c(2,1,1), col=1,lwd=2)
+legend(x=1950,y=0.502,legend=c("Share of bonds in government debt held by households"),
+			 lty=c(2),lwd=2,bty="n")
+grid()
+```
+
+Let's add a second scenario by which there is an expected fall in the price of long-term bonds.
+
+```{r,echo=T}
+lp2<-sfc.addScenario(model=lp2,vars=list(c("add")),values=list(c(-3)),inits=c(1955),
+											ends=1955)
+datalp2<-simulate(lp2)
+```
+
+This replicates plot figure 5.7. p. 157
+```{r,echo=T}
+time2=c(1950:2000)
+matplot(time2, datalp2$scenario_2[as.character(time2),c("r_bl")],
+		 type="l",xlab="",ylab="",lty=c(2,1,1), col=1,lwd=2)
+legend(x=1950,y=0.502,legend=c("Share of bonds in government debt held by households"),
+			 lty=c(2),lwd=2,bty="n")
+grid()
+```
+
+This replicates plot figure 5.8. p. 158
+```{r,echo=T}
+time2=c(1950:2000)
+matplot(time2, datalp2$scenario_2[as.character(time2),c("p_bl_e","p_bl")],
+		 type="l",xlab="",ylab="",lty=c(1,2), col=1,lwd=2)
+legend("center",legend=c("Expected price of bonds","Actual price of bonds"),
+			 lty=c(1,2),lwd=2,bty="n")
+grid()
+```
+
+This replicates plot figure 5.9. p. 158
+```{r,echo=T}
+time2=c(1950:2000)
+matplot(time2, datalp2$scenario_2[as.character(time2),c("TP","bot","top")],
+		 type="l",xlab="",ylab="",lty=c(2,1,1), col=1,lwd=2)
+legend("center",legend=c("Share of bonds in government debt held by households"),
+			 lty=c(2),lwd=2,bty="n")
+grid()
+```
 
 # References

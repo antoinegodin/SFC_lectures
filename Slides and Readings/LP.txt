@@ -16,16 +16,15 @@ g=20
 r_bar = 0.03
 p_bl_bar = 20
 # Opening values for stocks
-v = 95.78398
-b_h = 37.83084
-# b_s = 37.964
-b_s = 57.97904
-b_cb = 20.1482
-bl_h = 1.89029
-bl_s = 1.89029
-h_s = 20.1482
+v = 95.803
+b_h = 37.839
+b_s = 57.964
+b_cb = 20.125
+bl_h = 1.892
+bl_s = 1.892
+h_s = 20.125
 # Opening values for lagged endogenous
-yd_r = 95.78398
+yd_r = 95.803
 r_b = 0.03
 p_bl = 20
 # MODEL
