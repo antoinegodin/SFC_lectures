@@ -1,0 +1,69 @@
+#Assign values for
+#  PARAMETERS
+alpha0 = 25
+alpha1 = 0.75
+alpha2 = 0.1
+delta = 0.1
+gamma = 0.15
+kappa = 1
+#  EXOGENOUS
+pr = 1
+r_l_bar = 0.04
+w = 0.86
+#  STARTING VALUES FOR STOCKS
+m_h = 200
+m_s = m_h
+l_d = 200
+l_s = l_d
+k = 200
+#STARTING VALUES FOR LAGGED ENDOGENOUS
+y = 200
+r_l = r_l_bar
+r_m = r_l
+#Create a model object, and name it bmw_mod
+#Add equations to model BMW
+#Basic behavioural equations
+#Supply of consumption goods - eq. 7.1
+c_s = c_d
+#Supply of investment goods - eq. 7.2
+i_s = i_d
+#Supply of labour - eq. 7.3
+n_s = n_d
+#Transactions of the firms
+#GDP - eq. 7.5
+y = c_s + i_s
+#Wage bill - eq. 7.6
+wb_d = y - r_l(-1)*l_d(-1) - af
+#Depreciation allowances - eq. 7.7
+af = delta*k(-1)
+#Demand for bank loans - eq. 7.8
+l_d = l_d(-1) + i_d - af
+#Transactions of households
+#Disposable income - eq. 7.9
+yd = wb_s + r_m(-1)*m_h(-1)
+#Bank deposits held by households - eq. 7.10
+m_h = m_h(-1) + yd - c_d
+#The wage bill
+#"Supply" of wages - eq. 7.13
+wb_s = w*n_s
+#Labour demand - eq. 7.14
+n_d = y/pr
+#Wage rate - eq. 7.15
+w = wb_d/n_d
+#Household behaviour
+#Demand for consumption goods - eq. 7.16
+c_d = alpha0 + alpha1*yd + alpha2*m_h(-1)
+#The investment behaviour
+#Accumulation of capital - eq. 7.17
+k = k(-1) + i_d - da
+#Depreciation allowances - eq. 7.18
+da = delta*k(-1)
+#Capital stock target - eq. 7.19
+k_t = kappa*y(-1)
+# below is an additional equation I've defined to get output to capital ratio as in figure 7.4, the model will run even without equation
+OCR = y/k(-1)  
+#Demand for investment goods - eq. 7.20
+i_d = gamma*(k_t - k(-1)) + da
+#end of model equations
+#Select the baseline scenario
+timeline 1945 2010

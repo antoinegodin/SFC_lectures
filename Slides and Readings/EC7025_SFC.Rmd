@@ -101,8 +101,14 @@ for(name in c("N1N","N2N")){
 for(name in names[1:6]){
 	colnamea<-paste("A.MIO_NAC.CO",sec,"ASS",name,"UK",sep=".")
 	colnamel<-paste("A.MIO_NAC.CO",sec,"LIAB",name,"UK",sep=".")
-	balancesheet[counter,1]<-F_BS[20,colnamea]
-	balancesheet[counter,2]<-F_BS[20,colnamel]
+	if(is.null(F_BS[20,colnamea]))
+		balancesheet[counter,1]<-0
+	else
+		balancesheet[counter,1]<-F_BS[20,colnamea]
+	if(is.null(F_BS[20,colnamea]))
+		balancesheet[counter,2]<-0
+	else
+		balancesheet[counter,2]<-F_BS[20,colnamel]
 	counter<-counter+1
 }
 balancesheet[9,2]<-F_BS[20,paste("A.MIO_NAC.CO",sec,"LIAB.BF90.UK",sep=".")]+NFA_BS[18,paste("A.CP_MNAC",sec,"N1N.UK",sep=".")]+NFA_BS[18,paste("A.CP_MNAC",sec,"N2N.UK",sep=".")]
@@ -970,7 +976,7 @@ pc_end<-sfc.addEqus(pcex,list(
 pc_end<-sfc.addVars(pc_end,list(
   list(var="alpha10",init="0.7",
   		 desc="Endoegnous propensity to consume - autonomous term"),
-  list(var="iota",init="4",
+  list(var="iota",init="10",
   		 desc="Endoegnous propensity to consume - interest rate impact")))
 pc_end$scenarios<-NULL
 pc_end<-sfc.check(pc_end)
@@ -1333,5 +1339,136 @@ legend("center",legend=c("Share of bonds in government debt held by households")
 			 lty=c(2),lwd=2,bty="n")
 grid()
 ```
+
+# Modelling the firm: price, investment and profits
+
+## The role of banks: credit creation and investment
+
+- Firms will always have an investment function determinin the desired level of production capacity.
+	* Model BMW: $K^T=\kappa \cdot Y_{-1}$
+- However, the realisation of investment might be constrained by banks credit, leading to an eventual different between desired investment and actual investment.
+	* Model BMW: $I_d = \gamma \cdot (K^T-K_{-1})+DA$ where $\gamma$ can be interpreted as the outcome between firms and banks interactions.
+
+## Functional income distribution
+
+- The usual way to distribute income is between wage and profits (i.e. looking at wage share and profit share). 
+	* It is however often forgotten that profits are then decomposed further between different type of profits: retained earnings and distributed dividends.
+	* But that's not the end of the story: we can disaggregate even further profits between gross profits and net profits, the difference being 1. interest payments, 2. taxes and 3. capital amortisation
+	* It is usually the net profits that are then distributed between retained earnings and dividends.
+- In model BMW: depreciation allowances (amortisation) are accounted for explicitely ($DA= \delta.K_{-1}$), so are interest payments. We thus have the following functional distribution of income: $Y=WB+r_{l,-1}\cdot L_{-1} + DA$
+	* Note that in this case, the wage bill is endogenous since both interests payments and depreciation depend only on past values
+	
+## Consumption function
+
+- In model BWM, tyhe consumption function contains an autonomous term: $C = \alpha_0+\alpha_1\cdot YD + \alpha_2 \cdot M_{-1}$.
+	* The autonomous term plays an important role in the dynamics of the model as it "kick-starts" the model. It plays the same role as government expenditures in the previous model we've seen.
+	
+## Steady state of BMW
+
+- Let's do it manualy, starting from the list of equations:
+
+```{r, echo=T, eval=FALSE}
+#Supply of consumption goods - eq. 7.1
+ c_s = c_d
+#Supply of investment goods - eq. 7.2
+ i_s = i_d
+#Supply of labour - eq. 7.3
+ n_s = n_d
+#Transactions of the firms
+#GDP - eq. 7.5
+ y = c_s + i_s
+#Wage bill - eq. 7.6
+ wb_d = y - r_l(-1)*l_d(-1) - af
+#Depreciation allowances - eq. 7.7
+ af = delta*k(-1)
+#Demand for bank loans - eq. 7.8
+ l_d = l_d(-1) + i_d - af
+#Transactions of households
+#Disposable income - eq. 7.9
+ yd = wb_s + r_m(-1)*m_h(-1)
+#Bank deposits held by households - eq. 7.10
+ m_h = m_h(-1) + yd - c_d
+#The wage bill
+#"Supply" of wages - eq. 7.13
+ wb_s = w*n_s
+#Labour demand - eq. 7.14
+ n_d = y/pr
+#Wage rate - eq. 7.15
+ w = wb_d/n_d
+#Household behaviour
+#Demand for consumption goods - eq. 7.16
+ c_d = alpha0 + alpha1*yd + alpha2*m_h(-1)
+#The investment behaviour
+#Accumulation of capital - eq. 7.17
+ k = k(-1) + i_d - da
+#Depreciation allowances - eq. 7.18
+ da = delta*k(-1)
+#Capital stock target - eq. 7.19
+ k_t = kappa*y(-1)
+# below is an additional equation I've defined to get output to capital ratio as in figure 7.4, the model will run even without equation
+OCR = y/k(-1)  
+#Demand for investment goods - eq. 7.20
+ i_d = gamma*(k_t - k(-1)) + da
+```
+
+- Important points to discuss:
+	* Role of autonomous consumption
+	* The existence of non-negative GDP steady state
+	* The equality between capital stock and wealth
+
+## Out of equilibrium values
+
+- To do so, let's have a look at the graph representation of BMW:
+
+```{r,eval=T,echo=T}
+BMW<-sfc.model("BMW.txt")
+plot.dag(BMW)
+```
+
+- We need to solve the pink cycle and express Y (and K) as a function of only lagged variables.
+
+## Stability
+
+- Very brief intro because stability analysis of difference system is much more complicated than for differential systems (will be covered by Devrim in the second part of the semester).
+- The stability of a system of equations $z_t = A \cdot z_{t-1} + c$ can be analysed via the trace, determinant and discriminant of A
+	* trace = sum of diagonal terms, for 2x2 matrix: $tr_A = a_{11}+a_{22}$
+	* determinant, for a 2x2 matrix: $det_A = |A| = a_{11}\cdot a_{22} - a_{21}\cdot a_{12}$
+	* discriminat: $\Delta = tr_A^2+4\cdot det_A$
+- Necessary condition for stability is that tyeh absolute value of the determinant is smaller than 1
+- If this is respected, then either the determinant is positive or if it is negative, the trace has to be smaller than 2 if and only if $-det_a<1-|tr_A|$.
+- We won't go in the details, but the analysis highlight some important characteristics:
+	* the system will converge provided the marginal propensity to save is higher than the marginal propensity to invest
+	
+## More on profits and inventories
+
+- Inventories are fundamental for the working of a firm in terms of production smoothing, response to sudden changes in demand and dealing with uncertainty. They are very much related to the notion of time in SFC (and other types of post-Keynesian) models. Time is historical, based on past observation and projected in the future by expectations, on the contrary of mainstream models where the future is pulled in the present.
+- Example of a current account matrix for firms
+
+|Components| Firms Current account| Firms Capital account|
+|:----:|:---:|:----:|
+|Sales| $+S$||
+|Change in the value of inventories| +$\Delta IN$| -$\Delta IN$|
+|Wages| $-WB$||
+|Interest on loans| $-r_{l-1}  L_{-1}$||
+|Entrepreneurial profits| $-F$||
+|Change in loans| $+\Delta L$||
+|Sum| 0| 0|
+
+- Entrepreneurial vs total profits
+	* Entrepreneurial profits: $F=S-(WB-\Delta IN + r_{l,-1} IN_{-1})$
+	* Total profits: $F=S-(WB-\Delta IN)$
+- Historical wage costs vs total historic costs
+	* Historical wage costs: $HWC = (WB-\Delta IN)$
+	* Total istorical costs: $HC = (WB-\Delta IN)+r_{l,-1} IN_{-1}$
+- We can show that profits can always be expressed as a fraction of historical costs: $F= \phi' HC$, implying that sales can also be expressed as a function of historical costs only
+	* $S = F + HC
+	* $S = (1+\phi')HC$
+	* But Sales are also $S = s.p$, we can thus show that $p = (1+\phi')HUC$ where $HUC=\frac{HC}{s}$ is the historical unit cost.
+- Important distinction between entrepreneurial profits and cash flows and the definition of national accounts profits
+	* Entrepreneurial profits: $F=S-(WB-\Delta IN + r_{l,-1} IN_{-1})$
+	* Cash flow: $CF=S - WB - r_{l,-1} IN_{-1}$
+	* NIPA profits: $F_{nipa}=S - WB + \Delta IN - \Delta UC in_{-1}$ in order to remove stock appreciation or inventory valuation adjustment which are not "proper flows"
+
+
 
 # References
