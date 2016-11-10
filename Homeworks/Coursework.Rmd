@@ -1,0 +1,42 @@
+---
+title: "SFC Coursework"
+author: "Antoine Godin"
+date: "1 November 2016"
+output: pdf_document
+bibliography: Bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This document contains detailed instructions for your coursework. Do not hesitate to ask me, if something remains unclear.
+
+# Objective 
+
+The objective of this project is to give you the ability to communicate effectively and clearly in written format using a quantitative approach. To get a good grade, you’ll need to demonstrate an intermediate-level of competency in the analysis, interpretation and presentation of economic data.
+
+You are to calibrate the BMW model, chapter 7 from @Godley:2007 for a country of your choice, using Eurostat data. You can use either the Backward induction and massaged data as described during the final seminar we ran on week 5. You can obviously use the source code developped during the seminar.
+
+Detail your calibration procedure, explaining the various choices you made. I want you to then simulate the model, chosing a scenario that you find relevant. Comment on the results of the simulation.
+
+# Submission:
+
+Submit your report electronically by Friday, November 25, 11:00am. Please be assured that if you do plagiarize and I catch you, I’ll become extremely unpleasant towards you. 
+
+The project is to be a minimum of 1800 words and a maximum of 2000 words.  The title page, references (Harvard style) and footnores aren’t part of the word count. Submit your project in Times New Roman 12pt, with a title, your name, and your student number on a cover page. Reference your work.
+
+# Assessment Criteria
+
+|Category of achievement|	Marks available|
+|:------------------------------------------|:------------|
+|Data selection and motivation|20|
+|Presenting calibration procedure|20|
+|Simulation interpretation|30|
+|Creativity (noticing an interesting pattern, argument, supporting your evidence, etc.)|10|
+|Logic, clarity, and style of the report|10|
+|Referencing|5|
+|Formatting, presentation of tables and graphs|5|
+|Total Marks|100|
+
+#References
